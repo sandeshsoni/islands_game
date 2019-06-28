@@ -4,6 +4,7 @@ defmodule IslandsEngine.Coordinate do
   @board_range 1..10
 
 
+  @enforce_keys [:row, :col]
   defstruct [:row, :col]
 
   def new(row, col) when row in @board_range and col in @board_range do
