@@ -8,11 +8,19 @@ defmodule IslandsEngine.GuessesTest do
     {:ok, coordinate2} = Coordinate.new(2,2)
 
     guesses = Guesses.new
-    updated = update_in(guesses.hits, &MapSet.put(&1, coordinate1))
+    updated = Guesses.add(guesses, :hit, coordinate1)
     assert (Enum.member? updated.hits, coordinate1)
 
-    updated = update_in(guesses.hits, &MapSet.put(&1, coordinate2))
-    assert (Enum.member? updated.hits, coordinate2)
+  end
+
+  test "miss coordinate" do
+    {:ok, coordinate1} = Coordinate.new(1,1)
+    {:ok, coordinate2} = Coordinate.new(2,2)
+
+    guesses = Guesses.new
+
+    updated = Guesses.add(guesses, :miss, coordinate1)
+    assert (Enum.member? updated.misses, coordinate1)
   end
 
 end
