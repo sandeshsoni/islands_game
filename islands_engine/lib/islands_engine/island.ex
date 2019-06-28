@@ -24,7 +24,7 @@ defmodule IslandsEngine.Island do
   defp offsets(:dot), do: [{0,0}]
   defp offsets(:l_shape), do: [{0,0},{1,0},{2,0},{2,1}]
   defp offsets(:s_shape), do: [{0,1},{0,2},{1,0},{1,1}]
-  defp offsets(_), do: {:error, :invalid_offset}
+  defp offsets(_), do: {:error, :invalid_island_type}
 
   def add_coordinates(offsets, upper_left) do
     Enum.reduce_while(offsets, MapSet.new(), fn offset, accu ->
