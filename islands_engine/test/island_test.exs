@@ -23,4 +23,20 @@ defmodule IslandsEngine.IslandTest do
     assert MapSet.member?(island.coordinates,coordinate)
   end
 
+  test "forested island" do
+    {:ok, coordinate1} = Coordinate.new(1,1)
+    {:ok, coordinate2} = Coordinate.new(1,2)
+    {:ok, coordinate3} = Coordinate.new(2,1)
+    {:ok, coordinate4} = Coordinate.new(2,2)
+
+    {:ok, island} = Island.new(:square, coordinate1)
+
+    {:hit, island} = Island.guess(island, coordinate1)
+    {:hit, island} = Island.guess(island, coordinate2)
+    {:hit, island} = Island.guess(island, coordinate3)
+    {:hit, island} = Island.guess(island, coordinate4)
+
+    assert Island.forested?(island)
+  end
+
 end
