@@ -1,6 +1,6 @@
 defmodule IslandsEngine.Board do
   alias __MODULE__
-  alias IslandsEngine.{Island}
+  alias IslandsEngine.{Island, Coordinate}
 
   def new do
     %{}
@@ -25,12 +25,15 @@ defmodule IslandsEngine.Board do
   end
 
   defp check_win(board) do
-    all_islands_on(board)
-    |> all_islands_forested?
+    case all_islands_on(board)
+    |> all_islands_forested? do
+      true -> :win
+      false -> :no_win
+    end
   end
 
   defp all_islands_on(board) do
-    Enum.values(board)
+    Map.values(board)
   end
 
   defp all_islands_forested?(islands) do
@@ -39,6 +42,30 @@ defmodule IslandsEngine.Board do
 
   # {hit_or_miss, island, win_no_win, board}
   def guess(board, coordinate) do
+    board
+    |> check_all_islands(coordinate)
+    |> guess_response(board)
+  end
+
+  defp check_all_islands(board, coordinate) do
+    Enum.find_value(board, :miss, fn{key, island} ->
+      case Island.guess(island, coordinate) do
+        {:hit, island} -> {key, island}
+        :miss -> false
+      end
+    end)
+  end
+
+  def guess_response({key, island}, board) do
+    {:hit, island, check_win(board), board}
+  end
+
+  def guess_response(:miss, board) do
+    plain_response(board)
+  end
+
+  defp plain_response(board) do
+    {:miss, nil, :no_win, board}
   end
 
 end
