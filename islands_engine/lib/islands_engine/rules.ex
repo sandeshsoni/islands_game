@@ -11,6 +11,10 @@ defmodule IslandsEngine.Rules do
     {:ok, %Rules{rules | state: :players_set}}
   end
 
+  def check(%Rules{state: :players_set} = rules, :position_islands) do
+    {:ok, %Rules{rules | state: :islands_positioned}}
+  end
+
   def check(_state, _action) do
     :error
   end
